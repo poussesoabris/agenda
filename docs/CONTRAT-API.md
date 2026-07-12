@@ -37,7 +37,7 @@ Le champ `generatedAt` donne l'heure exacte de génération.
 {
   "generatedAt": "2026-07-12T09:41:23.512Z", // date de génération (ISO 8601 UTC)
   "agendaUid": 85936282,                      // uid de l'agenda OpenAgenda source
-  "source": "https://openagenda.com/agendas/85936282/events.json",
+  "source": "https://api.openagenda.com/v2/agendas/85936282/events",
   "eventCount": 7,                            // nb d'événements OpenAgenda source
   "total": 87,                                // nb d'occurrences journalières exposées
   "occurrences": [ /* voir ci-dessous, triées par start croissant */ ]
@@ -105,7 +105,6 @@ Le champ `generatedAt` donne l'heure exacte de génération.
 
 ## Évolutions prévues (n'impactent pas ce contrat)
 
-- Migration de la source : export legacy OpenAgenda → API v2 avec clé (côté génération uniquement).
 - Fiabilisation de `type` quand les catégories seront renseignées dans OpenAgenda (les valeurs pourront s'enrichir — prévoir un fallback d'affichage pour toute valeur inconnue).
 
 ## À venir / à compléter

@@ -35,11 +35,18 @@ jobs:
         with:
           node-version: 20
 
+      - name: Vérifier la présence de la clé API
+        env:
+          OPENAGENDA_KEY: ${{ secrets.OPENAGENDA_KEY }}
+        run: |
+          if [ -z "$OPENAGENDA_KEY" ]; then
+            echo "::error::Secret OPENAGENDA_KEY absent. L'API v2 est la seule source supportée (pas de repli legacy) : créer le secret dans Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
       - name: Générer events.json
         run: node build-events.js
         env:
-          # Clé API v2 OpenAgenda (secret du dépôt). Absente → repli sur
-          # l'export legacy public. La poser suffit à basculer sur l'API v2.
           OPENAGENDA_KEY: ${{ secrets.OPENAGENDA_KEY }}
 
       - name: Tests

@@ -4,7 +4,8 @@
  * via GitHub Actions (voir build-events.js + .github/workflows/build-events.yml).
  * Même logique métier que le build : lib/openagenda.js.
  *
- * Usage : node api-agenda.js  →  http://localhost:8787/events
+ * Usage : OPENAGENDA_KEY=xxx node api-agenda.js  →  http://localhost:8787/events
+ * (clé obligatoire — l'API v2 est la seule source supportée)
  *   GET /events            → occurrences à venir, triées par date
  *     ?from=YYYY-MM-DD     → à partir de cette date (défaut : aujourd'hui)
  *     ?to=YYYY-MM-DD       → jusqu'à cette date incluse
