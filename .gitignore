@@ -1,0 +1,9 @@
+# Généré par build-events.js (reconstruit par le CI)
+dist/
+
+# Outillage local Claude Code
+.claude/
+
+# Divers
+node_modules/
+*.log
