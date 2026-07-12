@@ -1,0 +1,15 @@
+{
+  "name": "pousseoabris-agenda-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Agenda OpenAgenda de Pousses Ô Abris exposé en occurrences journalières (JSON statique publié sur GitHub Pages)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build-events.js",
+    "test": "node build-events.js && node test-events.js",
+    "dev": "node api-agenda.js"
+  }
+}

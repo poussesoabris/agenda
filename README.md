@@ -31,7 +31,6 @@ heure de Paris. Les événements récurrents sont dépliés séance par séance.
 | `test-events.js` | Tests unitaires (découpage, DST) + invariants sur le JSON généré |
 | `.github/workflows/build-events.yml` | Cron 15 min + bouton manuel + push → build, tests, déploiement Pages |
 | `api-agenda.js` | Outil de dev local : même logique servie en live sur `http://localhost:8787/events` avec filtres |
-| `agenda.html`, `agenda-officiel.html`, `_serve.js` | Démos front historiques (rendu maison / iframe officielle) — `node _serve.js` pour les voir |
 
 ## Développement local
 
@@ -66,3 +65,6 @@ avec la clé, vérifier que `node test-events.js` passe — les invariants valid
 
 - Le champ `type` est déduit du titre tant que les catégories ne sont pas renseignées
   dans OpenAgenda.
+- Le CI déploie toutes les 15 min même si les données n'ont pas changé (`generatedAt`
+  rend chaque JSON unique). Simple et sans état ; si GitHub venait à limiter les
+  déploiements, comparer le contenu hors `generatedAt` et sauter le déploiement.

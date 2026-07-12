@@ -62,4 +62,4 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => console.log(`API dev locale sur http://localhost:${PORT}/events`));
+server.listen(PORT, "127.0.0.1", () => console.log(`API dev locale sur http://localhost:${PORT}/events`));
