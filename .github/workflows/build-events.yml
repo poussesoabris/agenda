@@ -36,6 +36,10 @@ jobs:
 
       - name: Générer events.json
         run: node build-events.js
+        env:
+          # Clé API v2 OpenAgenda (secret du dépôt). Absente → repli sur
+          # l'export legacy public. La poser suffit à basculer sur l'API v2.
+          OPENAGENDA_KEY: ${{ secrets.OPENAGENDA_KEY }}
 
       - name: Tests
         run: node test-events.js

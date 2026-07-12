@@ -48,10 +48,21 @@ Aucune dépendance npm — Node ≥ 18 suffit.
 Onglet **Actions** du dépôt → workflow « Build agenda events » → **Run workflow**.
 Sinon, le cron passe toutes les 15 minutes.
 
+## Source des données : API v2 (clé) avec repli legacy
+
+Le code supporte **deux sources**, choisies automatiquement :
+
+- **API v2 officielle** dès que la variable d'environnement `OPENAGENDA_KEY` est définie.
+  En CI : créer le secret de dépôt `OPENAGENDA_KEY` (Settings → Secrets and variables →
+  Actions) avec la clé API du compte OpenAgenda de l'asso — rien d'autre à changer.
+  En local : `OPENAGENDA_KEY=xxx node build-events.js`.
+- **Export legacy public** (déprécié par OpenAgenda) en repli tant que la clé n'est pas posée.
+
+⚠️ Le mapping v2 (`normalizeV2Event` dans `lib/openagenda.js`) est écrit de façon
+défensive mais n'a **pas encore tourné avec une clé réelle** : à la première exécution
+avec la clé, vérifier que `node test-events.js` passe — les invariants valident le mapping.
+
 ## À savoir / dette assumée
 
-- Source actuelle : **export legacy** OpenAgenda (public, sans clé), officiellement déprécié.
-  Migration prévue vers l'API v2 + clé (secret GitHub Actions) — seul `lib/openagenda.js`
-  (`fetchAllEvents`) est à adapter, le contrat front ne change pas.
 - Le champ `type` est déduit du titre tant que les catégories ne sont pas renseignées
   dans OpenAgenda.
