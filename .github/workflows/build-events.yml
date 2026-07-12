@@ -4,8 +4,10 @@
 name: Build agenda events
 
 on:
-  schedule:
-    - cron: "4,19,34,49 * * * *"
+  # Cron suspendu tant que le secret OPENAGENDA_KEY n'est pas posé
+  # (sinon un échec volontaire toutes les 15 min). Décommenter à l'arrivée de la clé.
+  # schedule:
+  #   - cron: "4,19,34,49 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
