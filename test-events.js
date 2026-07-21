@@ -8,7 +8,7 @@
  */
 const fs = require("fs");
 const path = require("path");
-const { splitByDay, dayKey } = require("./lib/openagenda");
+const { splitByDay, dayKey, isPubliable } = require("./lib/openagenda");
 
 let failures = 0;
 function check(label, cond, detail = "") {
@@ -48,6 +48,18 @@ console.log("Unitaires — splitByDay");
     segs.every((s) => dayKey(s.start) === s.date && dayKey(s.end) === s.date));
 }
 
+console.log("Unitaires — isPubliable");
+
+{
+  const publie = { state: 2, draft: 0, private: 0, valid: true };
+  check("événement publié accepté", isPubliable(publie));
+  check("en modération (state 0) rejeté", !isPubliable({ ...publie, state: 0 }));
+  check("prêt à publier (state 1) rejeté", !isPubliable({ ...publie, state: 1 }));
+  check("brouillon rejeté", !isPubliable({ ...publie, draft: 1 }));
+  check("événement privé rejeté", !isPubliable({ ...publie, private: 1 }));
+  check("événement invalide rejeté", !isPubliable({ ...publie, valid: false }));
+}
+
 /* ---------- 2. invariants sur dist/events.json ---------- */
 
 console.log("Intégration — dist/events.json");
@@ -64,7 +76,7 @@ check("total > 0", payload.total > 0);
 check("total = occurrences.length", payload.total === occ.length);
 check("generatedAt présent et ISO", !Number.isNaN(Date.parse(payload.generatedAt)));
 
-const REQUIRED = ["id", "eventUid", "date", "start", "end", "startTimeLocal", "endTimeLocal", "partial", "position", "title", "type", "location", "canonicalUrl"];
+const REQUIRED = ["id", "eventUid", "date", "start", "end", "startTimeLocal", "endTimeLocal", "partial", "position", "title", "type", "status", "location", "canonicalUrl"];
 check("champs requis présents partout",
   occ.every((o) => REQUIRED.every((k) => o[k] !== undefined)));
 

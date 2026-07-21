@@ -38,8 +38,8 @@ Le champ `generatedAt` donne l'heure exacte de génération.
   "generatedAt": "2026-07-12T09:41:23.512Z", // date de génération (ISO 8601 UTC)
   "agendaUid": 85936282,                      // uid de l'agenda OpenAgenda source
   "source": "https://api.openagenda.com/v2/agendas/85936282/events",
-  "eventCount": 7,                            // nb d'événements OpenAgenda source
-  "total": 87,                                // nb d'occurrences journalières exposées
+  "eventCount": 78,                           // nb d'événements OpenAgenda publiés
+  "total": 234,                               // nb d'occurrences journalières exposées
   "occurrences": [ /* voir ci-dessous, triées par start croissant */ ]
 }
 ```
@@ -59,6 +59,7 @@ Le champ `generatedAt` donne l'heure exacte de génération.
   "position": "single",
   "title": "Atelier papier recyclé",
   "type": "atelier",
+  "status": 1,
   "description": "Venez apprendre à fabriquer des cartes postales et du papier recyclé !…",
   "location": {
     "name": "Pousses Ô Abris - La Pépinière 192 route de Launaguet",
@@ -85,7 +86,8 @@ Le champ `generatedAt` donne l'heure exacte de génération.
 | `partial` | boolean | `true` si l'occurrence est un segment d'un événement multi-jours découpé. |
 | `position` | string | `single` (événement d'un jour) \| `start` / `middle` / `end` (position du segment dans un multi-jours). Permet d'afficher p. ex. « (suite) » ou « (dernier jour) ». |
 | `title` | string | Titre (français). |
-| `type` | string | `chantier` \| `atelier` \| `animation` \| `evenement`. ⚠️ Déduit du titre (heuristique) tant que l'asso ne renseigne pas de catégories dans OpenAgenda — à traiter comme indicatif. |
+| `type` | string | `chantier` \| `atelier` \| `animation` \| `evenement`. ⚠️ Déduit du titre (heuristique) tant que l'asso ne renseigne pas de catégories dans OpenAgenda — à traiter comme indicatif, et ~38 % des occurrences retombent sur `evenement` par défaut. |
+| `status` | number\|null | Code de statut OpenAgenda (déroulement normal, annulé, complet, reporté…), transmis **tel quel**. Seule la valeur `1` (normal) est observée à ce jour ; l'énumération n'étant pas documentée publiquement, ne pas coder de libellés en dur — traiter `1` comme normal et prévoir un affichage neutre pour toute autre valeur, qu'on précisera dès qu'un cas réel apparaîtra. |
 | `description` | string | Description courte (français). Peut être vide. |
 | `location.name/address/city` | string\|null | Lieu. |
 | `location.latitude/longitude` | number\|null | Coordonnées GPS (présentes sur tous les lieux actuels) — pour une carte. |
@@ -95,7 +97,8 @@ Le champ `generatedAt` donne l'heure exacte de génération.
 
 ## Conventions & recommandations front
 
-- **Filtrage temporel côté client** : l'API renvoie **toutes** les occurrences (passées comprises). Volume minuscule (< 200/an). Filtrer sur `date >= aujourd'hui` (à calculer en heure de Paris) pour l'affichage standard.
+- **Filtrage temporel côté client** : l'API renvoie **toutes** les occurrences, passées comprises (historique depuis septembre 2024). Ordre de grandeur actuel : 234 occurrences, ~235 Ko. Filtrer sur `date >= aujourd'hui` (calculé en heure de Paris) pour l'affichage standard — soit ~57 occurrences à venir.
+- **Seuls les événements publiés** sont exposés : brouillons, événements privés et événements en cours de modération sont écartés à la génération.
 - **Tri** : déjà trié par `start` croissant.
 - **Regroupement calendrier** : grouper par `date`.
 - **Bouton d'action** : `registrationUrl` si non-null (« S'inscrire »), sinon `canonicalUrl` (« Détails »).
